@@ -129,7 +129,6 @@ module.exports = {
 		new CopyWebpackPlugin([
 			{ from: './manifest.json', to: './'},
 			{ from: './favicon.ico', to: './'},
-			{ from: './pwa.js', to: './' },
 			path.resolve(__dirname, 'src/static')
 		]),
 		new workboxPlugin.GenerateSW({
