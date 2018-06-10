@@ -23,10 +23,10 @@ describe('Menu', () => {
 
 
 	describe('rederização', () => {
-		it('verifica se existe a página principal Home', () => {
+		it('verifica se existe a página principal Nav', () => {
 			render(<Menu />, scratch);
 
-			expect(scratch.innerHTML).to.contain('Home');
+			expect(scratch.innerHTML).to.contain('nav');
 		});
 
 	});
