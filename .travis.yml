@@ -1,0 +1,14 @@
+language: node_js
+node_js:
+- "8"
+script: yarn build
+deploy:
+  provider: firebase
+
+after_success:
+  - firebase deploy --token $FIREBASE_TOKEN --non-interactive
+
+notifications:
+  email:
+    on_failure: change
+    on_success: change
