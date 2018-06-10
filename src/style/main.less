@@ -1,3 +1,38 @@
-body{
-	background-color: #eee;
+.page{
+}
+
+.lista-de-filmes {
+	padding:5px;
+	padding-bottom:0px;
+	
+	.item-da-lista {
+		position: relative;
+		margin: 5px;
+		float: left;
+		figure {
+			.filme-conteudo{
+				background: #fffFFFEE;
+				padding: 5px;
+				position:absolute;
+				width: 100%;
+				height: 100%;
+				right: 0px;
+				top: 0px;
+				opacity: 0;
+				transition: all 0.5s;
+				.stars{
+					position:absolute;
+					bottom:-5px;
+					right:-5px;
+				}
+			}
+		}
+		figure:hover {
+			.filme-conteudo{
+				position:absolute;
+				opacity:1;
+			}
+		}
+		
+	}
 }

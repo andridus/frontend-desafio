@@ -1,0 +1,8 @@
+Chave da API (v3 auth)
+3bc186e4074d3467280a50b8b092de7c
+
+Token de Leitura da API (v4 auth)
+eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIzYmMxODZlNDA3NGQzNDY3MjgwYTUwYjhiMDkyZGU3YyIsInN1YiI6IjViMWQ3NDQ3MGUwYTI2NGZjMjAwMWU4ZSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.k8_0kxVjEbk1ky5dzoC6KqUoQkpeVzGGj_DRJPjR6q8
+
+Solicitação de exemplo de API
+https://api.themoviedb.org/3/movie/550?api_key=3bc186e4074d3467280a50b8b092de7c

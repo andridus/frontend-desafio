@@ -1,7 +1,8 @@
 import { h, Component } from 'preact';
 import { Router } from 'preact-router';
 
-import Header from './header';
+import Menu from './menu';
+import Home from './home';
 
 export default class App extends Component {
 	/** Gets fired when the route changes.
@@ -15,9 +16,17 @@ export default class App extends Component {
 	render() {
 		return (
 			<div id="app">
-				<Header />
-				<Router onChange={this.handleRoute}>
-				</Router>
+				<Menu />
+				<div class="container">
+					
+					<div class="column">
+						<div class="page">
+							<Router onChange={this.handleRoute}>
+								<Home path='/'/>
+							</Router>
+						</div>
+					</div>
+				</div>				
 			</div>
 		);
 	}

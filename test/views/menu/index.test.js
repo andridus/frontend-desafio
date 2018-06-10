@@ -2,9 +2,9 @@ import { h, render } from 'preact';
 import { route } from 'preact-router';
 import { expect } from 'chai';
 
-import App from '../../src/views/app';
+import Menu from '../../../src/views/menu';
 
-describe('App', () => {
+describe('Menu', () => {
 	let scratch;
 
 	beforeAll(() => {
@@ -22,9 +22,9 @@ describe('App', () => {
 	});
 
 
-	describe('routing', () => {
-		it('should render the homepage', () => {
-			render(<App />, scratch);
+	describe('rederização', () => {
+		it('verifica se existe a página principal Home', () => {
+			render(<Menu />, scratch);
 
 			expect(scratch.innerHTML).to.contain('Home');
 		});
