@@ -8,11 +8,11 @@ self.__precacheManifest = [
     "url": "/images/logo.png"
   },
   {
-    "revision": "f381d870a98a8c74dd513ac7aee8e3eb",
+    "revision": "8843a4db2fb6e8ca590f1760d5451155",
     "url": "/index.html"
   },
   {
-    "revision": "75d94b17220ba52b8211",
+    "revision": "0c6e2cec078f42a83cb5",
     "url": "/style.css"
   },
   {
@@ -44,11 +44,10 @@ self.__precacheManifest = [
     "url": "/images/icons/icon-128x128.png"
   },
   {
-    "revision": "53ac170e970ad034a55ee15ce198708c",
-    "url": "/favicon.ico"
+    "url": "/fb033499b374c6dfab45-bundle.js"
   },
   {
-    "revision": "75d94b17220ba52b8211",
-    "url": "/bundle.js"
+    "revision": "53ac170e970ad034a55ee15ce198708c",
+    "url": "/favicon.ico"
   }
 ];

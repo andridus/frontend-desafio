@@ -5,11 +5,15 @@ import workboxPlugin  from 'workbox-webpack-plugin';
 import autoprefixer from 'autoprefixer';
 import path from 'path';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
+import CleanWebpackPlugin from 'clean-webpack-plugin';
 
 const ENV = process.env.NODE_ENV || 'development';
 
 const CSS_MAPS = ENV!=='production';
 
+let pathsToClean = [
+  'build'
+]
 module.exports = {
 	mode: ENV,
 	// input
@@ -20,7 +24,7 @@ module.exports = {
 	output: {
 		path: path.resolve(__dirname, 'build'),
 		publicPath: '/',
-		filename: 'bundle.js'
+		filename: '[hash]-bundle.js'
 	},
 
 	// resolve
@@ -116,6 +120,7 @@ module.exports = {
 		]
 	},
 	plugins: ([
+		new CleanWebpackPlugin(pathsToClean, {}),
 		new webpack.NoEmitOnErrorsPlugin(),
 		new ExtractTextPlugin({
 			filename: 'style.css',
@@ -124,7 +129,8 @@ module.exports = {
 		}),
 		new HtmlWebpackPlugin({
 			template: './index.ejs',
-			minify: {collapseWithespace: true }
+			minify: {collapseWithespace: true },
+			inject: true
 		}),
 		new CopyWebpackPlugin([
 			{ from: './manifest.json', to: './'},
