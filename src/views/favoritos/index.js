@@ -1,13 +1,18 @@
 import { h, Component } from 'preact';
 import xhr from 'xhr';
+import { Link } from 'preact-router';
 
-export default class Home extends Component {
+
+const IMAGE_MOVIE_SIZE_WIDTH = 185
+const IMAGE_MOVIE_SIZE_HEIGHT = 278;
+export default class Favoritos extends Component {
 
 	constructor(props){
 		super(props);
 		this.setState({r: [], p: 1, loading: false, image_size:'200px', image_size_url: 'w185_and_h278_bestv2',});
 		this.recarrega_itens.bind(this);
 		this.on_window_width_change.bind(this);
+		this.get_approximately_start_rows.bind(this);
 	}
 	componentDidMount(){
 		let that = this;
@@ -34,8 +39,26 @@ export default class Home extends Component {
 			
 		}
 
-
-		this.recarrega_itens(1)
+		this.get_approximately_start_rows();
+		
+		
+	}
+	get_approximately_start_rows(){
+		//AJUSTA PARA CARREGAR INICIALMENTE A QUANTIDADE DE FILMES QUE LOTARIAM A TELA
+		let that = this;
+		let in_rows = Math.ceil(window.innerHeight/IMAGE_MOVIE_SIZE_HEIGHT);
+		let in_columns = Math.trunc(window.innerWidth/(IMAGE_MOVIE_SIZE_WIDTH+20));
+		let expected_total = in_columns*in_rows;
+		console.log(in_rows,in_columns, expected_total);
+		if(expected_total>20){
+			this.recarrega_itens(1, function(){
+			setTimeout(() => {
+				that.recarrega_itens(2);
+			}, 500);
+		})
+		}else{
+			this.recarrega_itens(1);
+		}
 		
 	}
 	on_window_width_change(w){
@@ -43,15 +66,13 @@ export default class Home extends Component {
 				// MUDA O TIPO DE IMAGEM DO FILME SE A TELA FOR MENOR DO QUE 500PX
 				this.setState({image_size:'100%', image_size_url: 'w500_and_h282_face'});
 			}else{
-
 				// SCRIPT PARA AJUSTAR AS IMAGENS DO FILME DA TELA, (para caber na tela)
 				let container = document.querySelector('.container');
 				if(container){
-					let image_size = 185;
-					let tam_width = container.offsetWidth/(image_size+5);
+					let tam_width = container.offsetWidth/(IMAGE_MOVIE_SIZE_WIDTH+5);
 					let trunc_tam = Math.trunc(tam_width); 
 					let mantissa = tam_width - trunc_tam;
-					let new_tam = image_size + ((mantissa/trunc_tam)*(image_size));
+					let new_tam = IMAGE_MOVIE_SIZE_WIDTH + ((mantissa/trunc_tam)*(IMAGE_MOVIE_SIZE_WIDTH));
 					this.setState({image_size: new_tam+"px", image_size_url: 'w185_and_h278_bestv2'});
 				}
 				
@@ -59,7 +80,7 @@ export default class Home extends Component {
 			}
 			
 	}
-	recarrega_itens(p){
+	recarrega_itens(p, func){
 		let that = this;
 		const timeWindow = 500;//TEMPO LIMITE EM MILISEGUNDOS PARA UMA NOVA SOLICITAÇÃO DE RECARREGAR DADOS
 		
@@ -92,7 +113,7 @@ export default class Home extends Component {
 					let res = that.state.r;
 					let res1 = res.concat(result.results)
 					that.setState({ r: res1, p: p + 1 })
-					//console.log(err, resp, body)
+					if(func) func();
 				}
 
 			})
@@ -116,12 +137,12 @@ export default class Home extends Component {
 											 <b class="title is-6">{x.title}</b>
 											 <p class="is-size-7 has-text-gray">{x.overview.substr(0, 200)}...</p>
 											 <div class="stars">
-												 <div class="tag is-small is-warning ">
-													 <i class="fa fa-star" style="margin-right: 5px;"> </i>{x.popularity}
-												 </div>
-											 	<div class="button is-light is-small">
-												 	<u>Detalhes</u>
-												</div>
+													<div class="tag is-small is-warning ">
+														<i class="fa fa-star" style="margin-right: 5px;"> </i>{x.popularity}
+													</div>
+													<Link href={"/movie/"+x.id} class="button is-light is-small">
+														<i class="fa fa-star-alt" style="margin-right:5px"> </i> Detalhes
+													</Link>
 												
 											</div>
 										 </div>
@@ -133,7 +154,7 @@ export default class Home extends Component {
 
 						})}
 
-						{<li  class="item-da-lista-loading" style={"width: "+that.state.image_size}>
+						{this.state.loading && <li  class="item-da-lista-loading" style={"width: "+that.state.image_size}>
 							<div class="loading-spinner1">
 								<i class="fa fa-spinner fa-spin"></i>
 								<p>

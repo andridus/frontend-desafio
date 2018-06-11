@@ -2,20 +2,24 @@ import { h, Component } from 'preact';
 import { Router } from 'preact-router';
 
 import Menu from './menu';
-import Home from './home';
+import Populares from './populares';
+import Favoritos from './favoritos';
+import Filme from './filme';
+
+//CALLBACKS PARA EVENTOS ENTRE PÁGINAS
 window.subscriptions = window.subscriptions || {};
 window.subscriptions.screen = window.subscriptions.screen || {};
 window.subscriptions.scroll = window.subscriptions.scroll || {};
+window.subscriptions.screen.callback = (w) => {};
+window.subscriptions.scroll.callback = (w, d) => {};
+
+
 export default class App extends Component {
-	/** Gets fired when the route changes.
-	 *	@param {Object} event		"change" event from [preact-router](http://git.io/preact-router)
-	 *	@param {string} event.url	The newly routed URL
-	 */
 	handleRoute = e => {
 		this.currentUrl = e.url;
 	};
 
-	componentDidMount(){
+	componentDidMount(e){
 		window.onresize = function(){
 			window.subscriptions.screen.callback(window);
 		}
@@ -26,15 +30,17 @@ export default class App extends Component {
 
 	render() {
 		return (
-			<div id="app">
+			<div id="app" >
 				<Menu />
-				<div class="container is-gapless">
+				
 					<div class="page">
 							<Router onChange={this.handleRoute}>
-								<Home path='/'/>
+								<Populares path='/'/>
+								<Favoritos path='/favoritos' />
+								<Filme path='/filme/:id' />
 							</Router>
 					</div>
-				</div>				
+	
 			</div>
 		);
 	}

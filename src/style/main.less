@@ -1,6 +1,55 @@
 .page{
 }
+html{
+	background: rgb(34, 20, 2)!important;
+}
+.top-bar{
+	position:fixed;
+	width: 100%;
+	z-index:15000;
+}
+.top-bar-fix{
+	height:105px;
+}
+.filme-panel{
+	padding:10px;
+	width:100%; 
+	height:100%;
+	background-image: radial-gradient(circle at 20% 50%, rgba(217, 226, 230, 0.98) 0%, rgba(238, 226, 194, 0.88) 100%);
+	position: relative;
 
+	.panel-content{
+	z-index: 20;
+	width:100%; 
+	height:100%;
+		.panel-poster{
+			float:left;
+			margin-right:15px;
+		}
+	}
+}
+.panel-background{
+	opacity: 0.5; 
+	width:100%; 
+	height:100%; 
+	top: 0px;
+	left: 0px;
+	z-index: 10;
+}
+.movie-cast{
+	padding:0px;
+	
+	margin-top: 10px;
+	li{
+		float:left;
+		margin-right:10px;
+		height: 100px;
+		figure img{
+			border:1px solid #ccc;
+			
+		}
+	}
+}
 .lista-de-filmes {
 	padding-bottom:0px;
 	
@@ -25,8 +74,8 @@
 				transition: all 0.5s;
 				.stars{
 					position:absolute;
-					bottom:-5px;
-					right:-5px;
+					bottom:5px;
+					right:5px;
 				}
 			}
 		}

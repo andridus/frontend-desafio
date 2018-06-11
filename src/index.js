@@ -2,10 +2,9 @@
 import { h, render } from 'preact';
 import './style/main';
 import 'bulma/css/bulma.min.css';
-let root;
 function init() {
 	let App = require('./views/app').default;
-	root = render(<App />, document.body, root);
+	render(<App />, document.body, document.body.lastChild);
 }
 
 // register ServiceWorker via OfflinePlugin, for prod only:
@@ -17,5 +16,7 @@ if (module.hot) {
 	//require('preact/devtools');   // turn this on if you want to enable React DevTools!
 	module.hot.accept('./views/app', () => requestAnimationFrame(init) );
 }
+window.onload = function(){
+	init();
+}
 
-init();
