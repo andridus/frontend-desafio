@@ -5,13 +5,17 @@ export default class Home extends Component {
 
 	constructor(props){
 		super(props);
-		this.setState({r: [], p: 1, loading: false});
+		this.setState({r: [], p: 1, loading: false, image_size: 'w185_and_h278_bestv2'});
 		this.recarrega_itens.bind(this);
+		this.on_window_width_change.bind(this);
 	}
 	componentDidMount(){
 		let that = this;
-		window.subscriptions.screen.callback = (data) => {
+		this.on_window_width_change(window)
+		window.subscriptions.screen.callback = (w) => {
 			//console.log("aqui", data);
+			console.log("here")
+			this.on_window_width_change(w)
 		}
 		window.subscriptions.scroll.callback = (w, d) => {
 			let outer_h = d.documentElement.offsetHeight;
@@ -26,6 +30,14 @@ export default class Home extends Component {
 
 		this.recarrega_itens(1)
 		
+	}
+	on_window_width_change(w){
+		console.log(w)
+		if(w.innerWidth<500){
+				this.setState({image_size: 'w500_and_h282_face'});
+			}else{
+				this.setState({image_size: 'w185_and_h278_bestv2'});
+			}
 	}
 	recarrega_itens(p){
 		const timeWindow = 500;
@@ -58,18 +70,18 @@ export default class Home extends Component {
 		
 	}
 	render({}, {}) {
+		let that = this;
 		return (
 			<div>
 				<h3 class="subtitle is-size-4 has-text-centered">
 					Mais populares
 				</h3>
-				<table class="table is-fullwidth">
 					<ul class="lista-de-filmes">
 						{this.state.r && this.state.r.map(x => {
 							 return (
 								 <li class="item-da-lista">
 									 <figure class="image">
-										 <img src={'https://image.tmdb.org/t/p/w185_and_h278_bestv2'+x.poster_path} />
+										 <img src={'https://image.tmdb.org/t/p/'+that.state.image_size+x.poster_path} />
 										 <div class="filme-conteudo">
 											 <b class="title is-6">{x.title}</b>
 											 <p class="is-size-7 has-text-gray">{x.overview.substr(0, 200)}...</p>
@@ -92,7 +104,6 @@ export default class Home extends Component {
 						})}
 						
 					</ul>
-				</table>
 			</div>
 		);
 	}
