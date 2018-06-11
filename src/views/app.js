@@ -28,14 +28,11 @@ export default class App extends Component {
 		return (
 			<div id="app">
 				<Menu />
-				<div class="container">
-					
-					<div class="column">
-						<div class="page">
+				<div class="container is-gapless">
+					<div class="page">
 							<Router onChange={this.handleRoute}>
 								<Home path='/'/>
 							</Router>
-						</div>
 					</div>
 				</div>				
 			</div>
