@@ -123,7 +123,7 @@ export default class Populares extends Component {
 		let that = this;
 		return (
 			<div class="container is-gapless">
-				<h3 class="subtitle is-size-4 has-text-centered">
+				<h3 class="subtitle has-text-white is-size-4 has-text-centered">
 					Mais populares
 				</h3>
 					<ul class="lista-de-filmes">
@@ -153,7 +153,7 @@ export default class Populares extends Component {
 
 						})}
 
-						{this.state.loading && <li  class="item-da-lista-loading" style={"width: "+that.state.image_size}>
+						{this.state.loading && <li  class="item-da-lista-loading has-text-white" style={"width: "+that.state.image_size}>
 							<div class="loading-spinner1">
 								<i class="fa fa-spinner fa-spin"></i>
 								<p>
