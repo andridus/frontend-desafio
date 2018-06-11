@@ -143,11 +143,18 @@ export default class Filme extends Component {
 		let d = new Date(data);
 		return d.getUTCFullYear();
 	}
+	close_viewer(e){
+		console.log("here")
+		this.setState({viewing: null})
+	}
 	render({}, {}) {
 		let that = this;
 		let r = this.state.r;
 		return (
 			<div>
+				<div class={'movie-viewer' + (this.state.viewing?'':'-hide')} onClick={this.close_viewer.bind(this)}>
+					<iframe class="video-youtube" width="560" height="315" src={'https://www.youtube.com/embed/'+this.state.viewing} frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+				</div>
 				{r &&
 					<div>
 						<div class="container">
@@ -156,9 +163,11 @@ export default class Filme extends Component {
 									<div class="panel-content">
 										<div class="panel-poster" >
 											<img  src={'https://image.tmdb.org/t/p/' + that.state.image_size_url+'/'+r.poster_path}  />
-											{r.trailer && <a class="button is-dark" href={ 'https://www.youtube.com/watch?v=' + r.trailer.key} target="_blank">
+											{r.trailer && <div class="button is-dark" onClick={(e)=>{
+												this.setState({ viewing: r.trailer.key})
+											}}>
 											Trailer
-											</a>}
+											</div>}
 										</div>
 										<h3 class="title is-size-3">
 											{r.title} <br />

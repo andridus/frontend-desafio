@@ -27,7 +27,7 @@ html{
 			display: block;
 			float:left;
 			margin-right:15px;
-			a {
+			div.button {
 				display: block;
 			}
 			.hovered{
@@ -56,6 +56,27 @@ html{
 	top: 0px;
 	left: 0px;
 	z-index: 10;
+}
+.movie-viewer-hide{
+	display:none;
+}
+.movie-viewer{
+	display: inline;
+	position:fixed;
+	top:0px;
+	width: 100%;
+	height: 100%;
+	left:0px;
+	z-index:15000;
+	background: rgba(0, 0, 0, 0.9);
+
+	.video-youtube{
+		position:fixed;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%)
+
+	}
 }
 .movie-crew{
 	list-style: none;
