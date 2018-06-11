@@ -23,8 +23,29 @@ html{
 	width:100%; 
 	height:100%;
 		.panel-poster{
+			position: relative;
+			display: block;
 			float:left;
 			margin-right:15px;
+			a {
+				display: block;
+			}
+			.hovered{
+					opacity: 0;
+					position: absolute;
+					top:0px;
+					left:0px;
+					width: 100%;
+					height: 100%;
+					background: rgba(217, 226, 230, 0.5);
+					transition: 0.5s all;
+				}
+			&:hover{
+				.hovered{
+					opacity: 1;
+				}
+			}
+			
 		}
 	}
 }
@@ -36,20 +57,46 @@ html{
 	left: 0px;
 	z-index: 10;
 }
-.movie-cast{
-	padding:0px;
-	
-	margin-top: 10px;
-	li{
-		float:left;
-		margin-right:10px;
-		height: 100px;
-		figure img{
-			border:1px solid #ccc;
-			
-		}
+.movie-crew{
+	list-style: none;
+	li {
+		float: left;
+		margin: 10px;
+		margin-left:25px;
 	}
 }
+.movie-images{
+	li{
+		float:left;
+		padding: 2px;
+	}
+}
+.movie-cast{
+	color: #fff;
+	margin-top:20px;
+	ul {
+		padding:0px;
+		
+		margin-top: 10px;
+		li{
+			
+			margin-right:10px;
+			height: 100px;
+
+			figure{
+				float:left;
+				margin-right: 5px;
+				img{
+					border:1px solid #ccc;
+					
+				}
+			}
+			.movie-character{
+				
+			}
+		}
+	}
+} 
 .lista-de-filmes {
 	padding-bottom:0px;
 	
