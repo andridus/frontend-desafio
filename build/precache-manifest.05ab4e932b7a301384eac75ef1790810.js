@@ -8,11 +8,11 @@ self.__precacheManifest = [
     "url": "/images/white.png"
   },
   {
-    "revision": "5cb8745fa1e3eff6f9911aceadb2e5d4",
+    "revision": "69fed92dc2f086948fab0cbe44b5af65",
     "url": "/index.html"
   },
   {
-    "revision": "ee6a15b0349366107282",
+    "revision": "198c4a91510eb4f242a3",
     "url": "/style.css"
   },
   {
@@ -32,8 +32,8 @@ self.__precacheManifest = [
     "url": "/images/icons/icon-192x192.png"
   },
   {
-    "revision": "dea536a803bdcb8cfcfd4e6025ece5f0",
-    "url": "/images/ima1.jpg"
+    "revision": "5b1c1fd9010f0f009bbfdb11441f865c",
+    "url": "/images/no_image.png"
   },
   {
     "revision": "b031bb0f7dee9b67590ffd05fe4acf98",
@@ -52,14 +52,14 @@ self.__precacheManifest = [
     "url": "/images/logo.png"
   },
   {
-    "revision": "5b1c1fd9010f0f009bbfdb11441f865c",
-    "url": "/images/no_image.png"
+    "revision": "dea536a803bdcb8cfcfd4e6025ece5f0",
+    "url": "/images/ima1.jpg"
   },
   {
     "revision": "53ac170e970ad034a55ee15ce198708c",
     "url": "/favicon.ico"
   },
   {
-    "url": "/582640f8d83fd9c54973-bundle.js"
+    "url": "/c1bb8781b3226ce04374-bundle.js"
   }
 ];

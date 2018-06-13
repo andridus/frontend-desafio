@@ -15,13 +15,6 @@ export default class Menu extends Component {
 			this.setState({ query: null })
 	}
 
-	componentDidMount(){
-		let that = this;
-		window.subscriptions.search.callback = function(s){
-			console.log("updated s", s)
-			that.setState({query: s});
-		}
-	}
 	render() {
 		return (
 			<div>
