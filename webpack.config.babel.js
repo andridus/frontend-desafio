@@ -150,7 +150,12 @@ module.exports = {
 				{
 					urlPattern: new RegExp('https://image.tmdb.org/t/p/'),
 					handler: 'staleWhileRevalidate'
-				}],
+				},
+				{
+					urlPattern: new RegExp('https://frontend-desafio.firebaseio.com/'),
+					handler: 'staleWhileRevalidate'
+				}
+			],
 			
 		})
 	]).concat(ENV==='production' ? [ 

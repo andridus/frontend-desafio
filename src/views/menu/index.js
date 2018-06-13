@@ -2,19 +2,14 @@ import { h, Component } from 'preact';
 import { Link, route } from 'preact-router';
 
 export default class Menu extends Component {
-	constructor(props){
-		super(props);
-		
-
-
-	}
 	componentWillReceiveProps(props){
+
+		// RECEBE TERMOS DE PESQUISA
 		if(props.query)
 			this.setState({ query: decodeURI(props.query) })
 		else
 			this.setState({ query: null })
 	}
-
 	render() {
 		return (
 			<div>
@@ -29,8 +24,14 @@ export default class Menu extends Component {
 										WeLove<b>Movies</b>
 									</h1>
 								</Link>
-								<Link href="/favoritos" class="navbar-item">
-									<i class="fa fa-star-alt" style="margin-right:5px"> </i> Favoritos
+								<Link href="/" class="navbar-item" title="Filmes">
+									<i class="fa fa-film" style="margin-right:5px"> </i> 
+									<span class="is-hidden-mobile">Filmes</span>
+								</Link>
+								<Link href="/favoritos" class="navbar-item" title="favoritos">
+									<i class="fa fa-star" style="margin-right:5px"> </i> 
+									
+									<span class="is-hidden-mobile">Favoritos</span>
 								</Link>
 							</div>
 						</div>

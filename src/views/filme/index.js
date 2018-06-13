@@ -1,10 +1,11 @@
 import { h, Component } from 'preact';
 import xhr from 'xhr';
-import { Link } from 'preact-router';
+import { Notification } from 'element-react';
 
-
+//CONSTANTES TAMANHO DOS POSTES, QUANDO NECESSÁRIO
 const IMAGE_MOVIE_SIZE_WIDTH = 185
 const IMAGE_MOVIE_SIZE_HEIGHT = 278;
+
 export default class Filme extends Component {
 
 	constructor(props){
@@ -16,13 +17,15 @@ export default class Filme extends Component {
 		
 	}
 	componentDidMount(){
-		this.carrega_filme(this.state.filme_id);
+		let that = this;
+		//CHAMA FUNÇÃO QUE CARREGA OS DADOS BÁSICOS DO FILME
+		that.carrega_filme(that.state.filme_id);
+		
 		this.on_window_width_change(window);
 		window.subscriptions.screen.callback = (w) => {
 			// ALTERA ESTADO BASEADO NA MUDANÇA DO TAMANHO DA TELA
 			this.on_window_width_change(w)
 		}
-		console.log("entrou")
 		window.subscriptions.search.callback(null);
 	}
 	on_window_width_change(w) {
@@ -44,9 +47,11 @@ export default class Filme extends Component {
 		}
 
 	}
+
+	// FUNÇÃO PARA CARREGAR DADOS BÁSICO DO FILME
 	carrega_filme(id){
 		let that = this;
-		that.setState({ loading: true});
+
 		xhr({
 				method: 'get',
 				uri: 'https://api.themoviedb.org/3/movie/'+id+'?api_key=3bc186e4074d3467280a50b8b092de7c&language=pt-BR',
@@ -56,15 +61,100 @@ export default class Filme extends Component {
 			}, function (err, resp, body) {
 				
 
+				//CASO RECEBA O DADO 
 				if (resp.statusCode == 200) {
 					let result = JSON.parse(body)
 					that.setState({ r: result })
-					that.carrega_cast(id, result);
+
+					//INICIA O CARREGAMENTO DO CASTING DO FILME
+					that.carrega_cast(id, result)
+				}
+				//CASO ESTEJA SEM CCONEXAO COM INTERNET E SEM CACHE
+				if(resp.statusCode == 0){
+					Notification.error({
+						title: 'Erro!',
+						message: <p>Não é possível acessar o filme . Talvez seja necessário a conexão com a internet</p>
+					});
 				}
 
 			})
 		
 	}
+	//CARREGA O CASTING DO FILME
+	carrega_cast(id, result) {
+		let that = this;
+
+		xhr({
+			method: 'get',
+			uri: 'https://api.themoviedb.org/3/movie/' + id + '/credits?api_key=3bc186e4074d3467280a50b8b092de7c&language=pt-BR',
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		}, function (err, resp, body) {
+			//CASO RECEBA O DADO 
+			if (resp.statusCode == 200) {
+				let result1 = JSON.parse(body);
+				//PEGA APENAS OS 9 PRIMEIROS RESULTADOS
+				result.casting = result1.cast.slice(0, 8);
+				//PEGA APENAS O DIRETOR E O ESCRITOR
+				result.crew = result1.crew.filter((c) => {
+					return c.job == "Director" || c.job == "Writer"
+				});
+
+				that.setState({ r: result })
+
+				//PEGA OS VIDEOS(TRAILERS) DO FILME
+				that.carrega_videos(id, result)
+			}	
+			//CASO ESTEJA SEM CCONEXAO COM INTERNET E SEM CACHE
+			if (resp.statusCode == 0) {
+				Notification.error({
+					title: 'Erro!',
+					message: <p>Não é possível acessar o filme . Talvez seja necessário a conexão com a internet</p>
+				});
+			}
+
+		})
+
+	}
+
+	
+	
+	carrega_videos(id, result) {
+		let that = this;
+		xhr({
+			method: 'get',
+			uri: 'https://api.themoviedb.org/3/movie/' + id + '/videos?api_key=3bc186e4074d3467280a50b8b092de7c&language=pt-BR',
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		}, function (err, resp, body) {
+
+			//CASO RECEBA O DADO
+			if (resp.statusCode == 200) {
+				let result1 = JSON.parse(body)
+				//PEGA O PRIMEIRO VIDEO PARA SER O TRAILER
+				if(result1.results.length>0) result.trailer = result1.results[0]; 
+
+				that.setState({ r: result })
+				//CARREGA AS IMAGENS
+				that.carrega_images( id, result)
+
+			}
+
+			//CASO ESTEJA SEM CCONEXAO COM INTERNET E SEM CACHE
+			if (resp.statusCode == 0) {
+				Notification.error({
+					title: 'Erro!',
+					message: <p>Não é possível acessar o filme . Talvez seja necessário a conexão com a internet</p>
+				});
+			}
+
+		})
+
+	}
+
+	//CARREGA AS IMAGES DO FILME
 	carrega_images(id, result) {
 		let that = this;
 		that.setState({ loading: true });
@@ -76,82 +166,53 @@ export default class Filme extends Component {
 			}
 		}, function (err, resp, body) {
 
-
+			//CASO RECEBA O DADO
 			if (resp.statusCode == 200) {
 				let result1 = JSON.parse(body)
 				let arr = result1.backdrops.concat(result1.posters);
-				result.images = arr.slice(0,19);
-				console.log(result);
+				//PEGA APENAS OS 20 PRIMEIROS POSTERS
+				result.images = arr.slice(0, 19);
 				that.setState({ r: result })
 			}
-
-		})
-
-	}
-	carrega_cast(id, result) {
-		let that = this;
-		that.setState({ loading: true });
-		xhr({
-			method: 'get',
-			uri: 'https://api.themoviedb.org/3/movie/' + id + '/credits?api_key=3bc186e4074d3467280a50b8b092de7c&language=pt-BR',
-			headers: {
-				'Content-Type': 'application/json'
-			}
-		}, function (err, resp, body) {
-
-			//ATUALIZA TEMPO LIMITE PARA AGORA
-			that.setState({ loading: false });
-
-			if (resp.statusCode == 200) {
-				let result1 = JSON.parse(body)
-				result.casting = result1.cast.slice(0,8);
-				result.crew = result1.crew.filter((c)=>{
-					return c.job == "Director" || c.job == "Writer"
+			//CASO ESTEJA SEM CCONEXAO COM INTERNET E SEM CACHE
+			if (resp.statusCode == 0) {
+				Notification.error({
+					title: 'Erro!',
+					message: <p>Não é possível acessar o filme . Talvez seja necessário a conexão com a internet</p>
 				});
-				console.log(result);
-				that.setState({ r: result })
-				that.carrega_videos(id, result);
 			}
 
 		})
 
 	}
-	carrega_videos(id, result) {
-		let that = this;
-		that.setState({ loading: true });
-		xhr({
-			method: 'get',
-			uri: 'https://api.themoviedb.org/3/movie/' + id + '/videos?api_key=3bc186e4074d3467280a50b8b092de7c&language=pt-BR',
-			headers: {
-				'Content-Type': 'application/json'
-			}
-		}, function (err, resp, body) {
 
-			//ATUALIZA TEMPO LIMITE PARA AGORA
-			that.setState({ loading: false });
-
-			if (resp.statusCode == 200) {
-				let result1 = JSON.parse(body)
-				
-				if(result1.results.length>0) result.trailer = result1.results[0];
-				that.setState({ r: result })
-				that.carrega_images(id, result);
-			}
-
-		})
-
-	}
+	//FUNÇÃO PARA PEGAR APENAS O 'ANO' DE UMA DATA
 	pega_ano(data){
 		let d = new Date(data);
 		return d.getUTCFullYear();
 	}
+	// FECHAR O VISUALIZADOR DE TRAILER
 	close_viewer(e){
-		console.log("here")
 		this.setState({viewing: null})
 	}
+
 	render({}, {}) {
 		let that = this;
 		let r = this.state.r;
+
+
+		// VERIFICA SE O FILME TEM POSTER, SE NÃO COLOCA A IMAGEM PADRÃO
+		let image = null
+		if(r){
+			image = r.poster_path
+			if (image == null) {
+				image = '/images/no_poster_' + that.state.image_size_url + '.png'
+			} else {
+				image = 'https://image.tmdb.org/t/p/' + that.state.image_size_url + image
+			}
+		}
+		
+
 		return (
 			<div>
 				<div class={'movie-viewer' + (this.state.viewing?'':'-hide')} onClick={this.close_viewer.bind(this)}>
@@ -164,7 +225,7 @@ export default class Filme extends Component {
 								<div class="container">
 									<div class="panel-content">
 										<div class="panel-poster" >
-											<img  src={'https://image.tmdb.org/t/p/' + that.state.image_size_url+'/'+r.poster_path}  />
+											<img  src={image}  />
 											{r.trailer && <div class="button is-dark" onClick={(e)=>{
 												this.setState({ viewing: r.trailer.key})
 											}}>

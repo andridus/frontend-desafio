@@ -92,6 +92,9 @@
   },
   "dependencies": {
     "bulma": "^0.7.1",
+    "element-react": "^1.4.19",
+    "element-theme-default": "^1.4.13",
+    "firebase": "^5.0.4",
     "preact": "^8.2.9",
     "preact-compat": "^3.18.0",
     "preact-render-to-string": "^3.7.0",

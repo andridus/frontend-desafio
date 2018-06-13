@@ -2,9 +2,8 @@ import { h, render } from 'preact';
 import { route } from 'preact-router';
 import { expect } from 'chai';
 
-import Menu from '../../../src/views/menu';
-
-describe('Menu', () => {
+import Filme from '../../../src/views/filme';
+describe('Filme', () => {
 	let scratch;
 
 	beforeAll(() => {
@@ -33,10 +32,10 @@ describe('Menu', () => {
 
 
 	describe('rederização', () => {
-		it('verifica se existe a página principal Nav', () => {
-			render(<Menu />, scratch);
+		it('verifica se existe o filme panel', () => {
+			render(<Filme />, scratch);
 
-			expect(scratch.innerHTML).to.contain('nav');
+			expect(scratch.innerHTML).to.contain('movie-viewer');
 		});
 
 	});

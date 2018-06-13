@@ -1,168 +1,211 @@
 import { h, Component } from 'preact';
 import xhr from 'xhr';
 import { Link } from 'preact-router';
+import { Notification } from 'element-react';
 
 
+//CONSTANTES TAMANHO DOS POSTES, QUANDO NECESSÁRIO
 const IMAGE_MOVIE_SIZE_WIDTH = 185
 const IMAGE_MOVIE_SIZE_HEIGHT = 278;
+
 export default class Favoritos extends Component {
 
-	constructor(props){
+	constructor(props) {
 		super(props);
-		this.setState({r: [], p: 1, loading: false, image_size:'200px', image_size_url: 'w185_and_h278_bestv2',});
-		this.recarrega_itens.bind(this);
-		this.on_window_width_change.bind(this);
-		this.get_approximately_start_rows.bind(this);
-	}
-	componentDidMount(){
 		let that = this;
+	
+		// ESTADO INICIAL DO COMPONENT
+		this.setState(
+			{ r: [], // DADOS, I.E, FILMES
+				p: 1, // PAGINA ATUAL
+				loading: true, //BIT PARA DEFINIR ESTADO DE CARREGAMENTO DE DADOS
+				sort: 'popularity', //ORDEM DE VISUALIZAÇÃO
+				image_size: '200px', // TAMANHO BASE DE UM POSTER
+				image_size_url: 'w185_and_h278_bestv2', // TAMANHO PADRÃO DOS POSTERS 
+				keywords: props.q //VARIÁVEL DE PESQUISA DE FILMES (VISIVEL EM QUALQUER TELA)
+			}
+		);
+
+
+		//DEFINE CONTEXTO DAS FUNÇÕES COM 'THIS'
+		this.on_window_width_change.bind(this);
+		this.on_handler_desfavoritar.bind(this);
+		this.get_favoritos.bind(this);
+		
+	}
+
+	// ACONTECE QUANDO O COMPONENTE É MONTADO NA TELA
+	componentDidMount() {
+		let that = this;
+		// APLICA FUNÇÃO DE AJUSTE DE TAMANHO DOS POSTERS
 		this.on_window_width_change(window);
 
+		//RECEBE CALLBACKS DE FUNÇÕES ÚTEIS
+		window.subscriptions.search.callback = (s) => {
+			that.setState({ r: [], keywords: s });
+			this.recarrega_itens(1);
+		};
 		window.subscriptions.screen.callback = (w) => {
 			// ALTERA ESTADO BASEADO NA MUDANÇA DO TAMANHO DA TELA
 			this.on_window_width_change(w)
 		}
-		window.subscriptions.scroll.callback = (w, d) => {
-			// ESENCIAL PARA O INFINITE SCROLL
-			// VERIFICA SE FALTA POUCO PARA CHEGAR NO FINAL
-			let one_image = document.querySelector('.item-da-lista');
-			if(one_image){
-				let image_height = one_image.offsetHeight;
-				let outer_h = d.documentElement.offsetHeight;
-				let inner_h = w.innerHeight;
-				let height = outer_h - inner_h;
-				if (w.scrollY > height - (image_height*2)){
-						
-						this.recarrega_itens(that.state.p+1)
-				}
+
+		//RECARREGA FAVORITOS
+		this.get_favoritos()
+
+
+	}
+	on_window_width_change(w) {
+		if (w.innerWidth < 500) {
+			// MUDA O TIPO DE IMAGEM DO FILME SE A TELA FOR MENOR DO QUE 500PX
+			this.setState({ image_size: '100%', image_size_url: 'w500_and_h282_face' });
+		} else {
+			// SCRIPT PARA AJUSTAR AS IMAGENS DO FILME DA TELA, (para caber na tela)
+			let container = document.querySelector('.container');
+			if (container) {
+				let tam_width = container.offsetWidth / (IMAGE_MOVIE_SIZE_WIDTH + 5);
+				let trunc_tam = Math.trunc(tam_width);
+				let mantissa = tam_width - trunc_tam;
+				let new_tam = IMAGE_MOVIE_SIZE_WIDTH + ((mantissa / trunc_tam) * (IMAGE_MOVIE_SIZE_WIDTH));
+				this.setState({ image_size: new_tam + "px", image_size_url: 'w185_and_h278_bestv2' });
 			}
-			
+
+			// FIM DO SCRIPT para caber na tela
 		}
 
-		this.get_approximately_start_rows();
-		
-		
 	}
-	get_approximately_start_rows(){
-		//AJUSTA PARA CARREGAR INICIALMENTE A QUANTIDADE DE FILMES QUE LOTARIAM A TELA
+	get_favoritos() {
 		let that = this;
-		let in_rows = Math.ceil(window.innerHeight/IMAGE_MOVIE_SIZE_HEIGHT);
-		let in_columns = Math.trunc(window.innerWidth/(IMAGE_MOVIE_SIZE_WIDTH+20));
-		let expected_total = in_columns*in_rows;
-		console.log(in_rows,in_columns, expected_total);
-		if(expected_total>20){
-			this.recarrega_itens(1, function(){
-			setTimeout(() => {
-				that.recarrega_itens(2);
-			}, 500);
+		//FAZ UMA BUSCA NO BANCO DE DADOS DO FIREBASE
+		xhr({
+			method: 'get',
+			uri: 'https://frontend-desafio.firebaseio.com/favoritos.json',
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		}, function (err, resp, body) {
+
+			if (resp.statusCode == 200) {
+				let fav = JSON.parse(body);
+				//CONVERTE O RESULTADO EM JS ARRAY
+				if (fav) {
+					let res1 = Object.keys(fav).map(key => {
+						let _res = fav[key];
+						_res.fbid = key;
+						return _res;
+					});
+					//DEFINE ESTADO COM  RESULTADO 
+					that.setState({ r: res1 , loading: false});
+				}else{
+					//DEFINE ESTADO COM RESULTADO VAZIO
+					that.setState({ r: [], loading: false });
+				}
+			} else {
+				//DEFINE ESTADO COM RESULTADO VAZIO
+				that.setState({ r: [], loading: false});
+			}
+
 		})
-		}else{
-			this.recarrega_itens(1);
-		}
-		
+
 	}
-	on_window_width_change(w){
-		if(w.innerWidth<500){
-				// MUDA O TIPO DE IMAGEM DO FILME SE A TELA FOR MENOR DO QUE 500PX
-				this.setState({image_size:'100%', image_size_url: 'w500_and_h282_face'});
-			}else{
-				// SCRIPT PARA AJUSTAR AS IMAGENS DO FILME DA TELA, (para caber na tela)
-				let container = document.querySelector('.container');
-				if(container){
-					let tam_width = container.offsetWidth/(IMAGE_MOVIE_SIZE_WIDTH+5);
-					let trunc_tam = Math.trunc(tam_width); 
-					let mantissa = tam_width - trunc_tam;
-					let new_tam = IMAGE_MOVIE_SIZE_WIDTH + ((mantissa/trunc_tam)*(IMAGE_MOVIE_SIZE_WIDTH));
-					this.setState({image_size: new_tam+"px", image_size_url: 'w185_and_h278_bestv2'});
-				}
-				
-				// FIM DO SCRIPT para caber na tela
+	//EVENTO QUANDO CLICAR EM DESFAVORITAR
+	on_handler_desfavoritar(filme) {
+		let that = this;
+
+		let filmes = this.state.r;
+
+		//DEFINE 'EM REMOÇÃO' O FILME CLICADO DA LISTA DE FILMES FAVORITOS
+		let idx = filmes.indexOf(filme);
+		filmes[idx].removendo = true;
+		that.setState({ r: filmes });
+
+		//ENVIA COMANDO PARA DELETAR DO FIREBASE O FILME
+		xhr({
+			method: 'delete',
+			uri: 'https://frontend-desafio.firebaseio.com/favoritos/' + filme.fbid + '.json',
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		}, function (err, resp, body) {
+			if (resp.statusCode == 200) {
+				//REMOVE O FILME DA LISTA DE FILMES FAVORITOS
+				filmes = filmes.filter(x => {
+					return x.id != filme.id;
+				});
+				//ATUALIZA FAVORITOS
+				that.get_favoritos();
+			}
+
+			// CASO O SISTEMA ESTIVER OFFLINE
+			if(resp.statusCode == 0){
+				Notification.error({
+					title: 'Erro!',
+					message: <p>Não é possível retirar o filme dos favoritos. Talvez seja necessário a conexão com a internet</p>
+				});
+				filmes[idx].removendo = false;
+				that.setState({ r: filmes });
 			}
 			
+		})
+
 	}
-	recarrega_itens(p, func){
-		let that = this;
-		const timeWindow = 500;//TEMPO LIMITE EM MILISEGUNDOS PARA UMA NOVA SOLICITAÇÃO DE RECARREGAR DADOS
-		
-		//DADOS INICIAIS DO throttle
-		let loading =  this.state.loading; 
-		let lastLoading = this.state.lastLoading || new Date().getTime()-timeWindow; 
-		let now = new Date().getTime();
-		
-		if (!loading && now - lastLoading>=timeWindow){
-			// SÓ ENTRA NESSA ETAPA SE JÁ NÃO ESTIVER CARREGANDO DADOS OU SE O TEMPO LIMITE ENTRE UMA REQUISIÇÃO E OUTRA JÁ SE ESGOTOU.
-
-			//ATUALIZA TEMPO LIMITE PARA AGORA
-			let lastLoading1 = new Date().getTime();
-			this.setState({ loading: true, lastLoading: lastLoading1});
-			
-			xhr({
-				method: 'get',
-				uri: 'https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=3bc186e4074d3467280a50b8b092de7c&language=pt-BR&page=' + p,
-				headers: {
-					'Content-Type': 'application/json'
-				}
-			}, function (err, resp, body) {
-				
-				//ATUALIZA TEMPO LIMITE PARA AGORA
-				let lastLoading1 = new Date().getTime();
-				that.setState({ loading: false, lastLoading: lastLoading1});
-
-				if (resp.statusCode == 200) {
-					let result = JSON.parse(body)
-					let res = that.state.r;
-					let res1 = res.concat(result.results)
-					that.setState({ r: res1, p: p + 1 })
-					if(func) func();
-				}
-
-			})
-		}
-		
-	}
-	render({}, {}) {
+	render({ }, { }) {
 		let that = this;
 		return (
-			<div>
-				<h3 class="subtitle is-size-4 has-text-centered">
-					Mais populares
-				</h3>
-					<ul class="lista-de-filmes">
-						{this.state.r && this.state.r.map(x => {
-							 return (
-								 <li class="item-da-lista" >
-									 <figure class="image" style={"width: "+that.state.image_size}>
-										 <img src={'https://image.tmdb.org/t/p/'+that.state.image_size_url+x.poster_path} style={"width: "+that.state.image_size} />
-										 <div class="filme-conteudo">
-											 <b class="title is-6">{x.title}</b>
-											 <p class="is-size-7 has-text-gray">{x.overview.substr(0, 200)}...</p>
-											 <div class="stars">
-													<div class="tag is-small is-warning ">
-														<i class="fa fa-star" style="margin-right: 5px;"> </i>{x.popularity}
+			<div class="container is-gapless">
+				<div class="subtitle has-text-centered" style="margin-top: 10px;color:#FFF">
+					Favoritos
+				</div>
+				<ul class="lista-de-filmes">
+					{this.state.r && this.state.r.map(x => {
+						return (
+							<li class="item-da-lista" >
+								<figure class="image" style={"width: " + that.state.image_size}>
+									<img src={'https://image.tmdb.org/t/p/' + that.state.image_size_url + x.poster_path} style={"width: " + that.state.image_size} />
+
+									<div class="movie-vote">
+										{x.vote_average}
+									</div>
+									<div class="filme-conteudo">
+										<b class="title is-6">{x.title}</b>
+										<p class="has-text-gray">{x.overview.substr(0, 130)}...</p>
+										<div class="stars">
+											<div class="button is-small is-danger " onClick={(e) => {
+												this.on_handler_desfavoritar(x);
+											}
+											}>
+												<i class="fa fa-trash" style="margin-right: 5px;"> </i>Remover dos Favoritos
 													</div>
-													<Link href={"/movie/"+x.id} class="button is-light is-small">
-														<i class="fa fa-star-alt" style="margin-right:5px"> </i> Detalhes
-													</Link>
-												
-											</div>
-										 </div>
-										 
-									 </figure>
-									 
-								 </li>
-							 )
+											<br />
+											<Link href={"/filme/" + x.id} class="button is-light is-small">
+												<i class="fa fa-star-alt" style="margin-right:5px"> </i> <u>Detalhes</u>
+											</Link>
 
-						})}
+										</div>
+									</div>
 
-						{this.state.loading && <li  class="item-da-lista-loading" style={"width: "+that.state.image_size}>
-							<div class="loading-spinner1">
-								<i class="fa fa-spinner fa-spin"></i>
-								<p>
-									Carregando mais itens
+								</figure>
+
+							</li>
+						)
+					})}
+				</ul>
+				{this.state.loading && <div class="item-da-lista-loading has-text-white" style={"width: 100%"}>
+					<div class="loading-spinner1">
+						<i class="fa fa-spinner fa-spin"></i>
+						<p>
+							Carregando filmes Favoritos
 								</p>
-							</div>
-						</li>}
-					</ul>
+					</div>
+				</div>}
+				{!this.state.loading && !this.state.r.length && <div class="item-da-lista-loading has-text-white" style={"width: 100%" }>
+					<div class="loading-spinner1">
+						<i class="fa fa-star fa-2x"></i>
+						<p>
+							Não foi adicionado nenhum filme à lista de favoritos
+					  </p>
+					</div>
+				</div>}
 			</div>
 		);
 	}
