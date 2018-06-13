@@ -1,7 +1,27 @@
 import { h, Component } from 'preact';
-import { Link } from 'preact-router';
+import { Link, route } from 'preact-router';
 
 export default class Menu extends Component {
+	constructor(props){
+		super(props);
+		
+
+
+	}
+	componentWillReceiveProps(props){
+		if(props.query)
+			this.setState({ query: decodeURI(props.query) })
+		else
+			this.setState({ query: null })
+	}
+
+	componentDidMount(){
+		let that = this;
+		window.subscriptions.search.callback = function(s){
+			console.log("updated s", s)
+			that.setState({query: s});
+		}
+	}
 	render() {
 		return (
 			<div>
@@ -25,7 +45,9 @@ export default class Menu extends Component {
 					<nav class="navbar is-white" role="navigation" aria-label="main navigation">
 						<div class="container">
 							<div class="control el-control has-icons-right">
-								<input class="el-input" type="text" placeholder="Digite o nome do filme" />
+								<input class="el-input" value={this.state.query} type="text" placeholder="Digite o nome do filme" onChange={(e)=>{
+									route('/search?q=' + encodeURI(e.target.value));
+								}} />
 								<span class="el-icon icon is-medium is-right">
 									<i class="fas fa-search"></i>
 								</span>

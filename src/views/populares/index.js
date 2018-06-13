@@ -9,15 +9,22 @@ export default class Populares extends Component {
 
 	constructor(props){
 		super(props);
-		this.setState({r: [], p: 1, loading: false, sort: 'popularity', image_size:'200px', image_size_url: 'w185_and_h278_bestv2',});
+		this.setState({r: [], p: 1, loading: false, sort: 'popularity', image_size:'200px', image_size_url: 'w185_and_h278_bestv2',keywords: props.q});
 		this.recarrega_itens.bind(this);
 		this.on_window_width_change.bind(this);
 		this.get_approximately_start_rows.bind(this);
 	}
+	componentWillReceiveProps(props){
+		this.setState({ r: [], p: 1, loading: false, keywords: props.q });
+		this.recarrega_itens(1);
+	}
 	componentDidMount(){
 		let that = this;
 		this.on_window_width_change(window);
-
+		window.subscriptions.search.callback = (s) => {
+			that.setState({ r: [], keywords: s});
+			this.recarrega_itens(1);
+		};
 		window.subscriptions.screen.callback = (w) => {
 			// ALTERA ESTADO BASEADO NA MUDANÇA DO TAMANHO DA TELA
 			this.on_window_width_change(w)
@@ -106,10 +113,15 @@ export default class Populares extends Component {
 					sort = "popularity.desc"
 					break;
 			}
-
+			let keywords = this.state.keywords;
+			let url = 'https://api.themoviedb.org/3/discover/movie?sort_by=' + sort + '&api_key=3bc186e4074d3467280a50b8b092de7c&language=pt-BR&page=' + p;
+			if(keywords){
+				keywords = encodeURI(keywords);
+				url = 'https://api.themoviedb.org/3/search/movie?api_key=3bc186e4074d3467280a50b8b092de7c&language=pt-BR&query='+keywords+'&page='+p
+			}
 			xhr({
 				method: 'get',
-				uri: 'https://api.themoviedb.org/3/discover/movie?sort_by='+sort+'&api_key=3bc186e4074d3467280a50b8b092de7c&language=pt-BR&page=' + p,
+				uri: url,
 				headers: {
 					'Content-Type': 'application/json'
 				}
@@ -163,7 +175,7 @@ export default class Populares extends Component {
 										 </div>
 										 <div class="filme-conteudo">
 											 <b class="title is-6">{x.title}</b>
-											 <p class="has-text-gray">{x.overview.substr(0, 150)}...</p>
+											 <p class="has-text-gray">{x.overview.substr(0, 130)}...</p>
 											 <div class="stars">
 													<div class="button is-small is-warning ">
 														<i class="fa fa-star" style="margin-right: 5px;"> </i>Favoritar

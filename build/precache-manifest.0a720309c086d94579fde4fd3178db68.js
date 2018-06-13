@@ -8,11 +8,11 @@ self.__precacheManifest = [
     "url": "/images/white.png"
   },
   {
-    "revision": "0ce9a71b5498f3c4ac8f3f8a23cbc177",
+    "revision": "5cb8745fa1e3eff6f9911aceadb2e5d4",
     "url": "/index.html"
   },
   {
-    "revision": "dc2cbc9f3051d209d3a0",
+    "revision": "ee6a15b0349366107282",
     "url": "/style.css"
   },
   {
@@ -25,7 +25,7 @@ self.__precacheManifest = [
   },
   {
     "revision": "b031bb0f7dee9b67590ffd05fe4acf98",
-    "url": "/images/icons/icon-144x144.png"
+    "url": "/images/icons/icon-152x152.png"
   },
   {
     "revision": "b031bb0f7dee9b67590ffd05fe4acf98",
@@ -41,7 +41,7 @@ self.__precacheManifest = [
   },
   {
     "revision": "b031bb0f7dee9b67590ffd05fe4acf98",
-    "url": "/images/icons/icon-152x152.png"
+    "url": "/images/icons/icon-144x144.png"
   },
   {
     "revision": "b031bb0f7dee9b67590ffd05fe4acf98",
@@ -60,6 +60,6 @@ self.__precacheManifest = [
     "url": "/favicon.ico"
   },
   {
-    "url": "/5e45c69c857b3135e6fd-bundle.js"
+    "url": "/582640f8d83fd9c54973-bundle.js"
   }
 ];

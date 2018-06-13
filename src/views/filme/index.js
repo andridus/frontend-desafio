@@ -22,6 +22,8 @@ export default class Filme extends Component {
 			// ALTERA ESTADO BASEADO NA MUDANÇA DO TAMANHO DA TELA
 			this.on_window_width_change(w)
 		}
+		console.log("entrou")
+		window.subscriptions.search.callback(null);
 	}
 	on_window_width_change(w) {
 		if (w.innerWidth < 550) {
