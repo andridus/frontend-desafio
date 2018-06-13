@@ -175,7 +175,7 @@ export default class Favoritos extends Component {
 											}
 											}>
 												{x.desfavoritando && <span><i class="fa fa-spinner fa-spin " style="margin-right: 5px;"> </i>Removendo dos favoritos</span>}
-												<i class="fa fa-trash" style="margin-right: 5px;"> </i>Remover dos Favoritos
+												{!x.desfavoritando && <span><i class="fa fa-trash" style="margin-right: 5px;"> </i>Remover dos Favoritos</span>}
 													</div>
 											<br />
 											<Link href={"/filme/" + x.id} class="button is-light is-small">
