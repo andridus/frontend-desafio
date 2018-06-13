@@ -135,12 +135,23 @@ module.exports = {
 		new CopyWebpackPlugin([
 			{ from: './manifest.json', to: './'},
 			{ from: './favicon.ico', to: './'},
+		//	{ from: './sw.js', to: './' },
 			path.resolve(__dirname, 'src/static')
 		]),
 		new workboxPlugin.GenerateSW({
 			swDest:'sw.js',
 			clientsClaim: true,
-			skipWaiting: true
+			skipWaiting: true,
+			runtimeCaching: [
+				{
+					urlPattern: new RegExp('https://api.themoviedb.org/3/'),
+					handler: 'staleWhileRevalidate'
+				},
+				{
+					urlPattern: new RegExp('https://image.tmdb.org/t/p/'),
+					handler: 'staleWhileRevalidate'
+				}],
+			
 		})
 	]).concat(ENV==='production' ? [ 
 		

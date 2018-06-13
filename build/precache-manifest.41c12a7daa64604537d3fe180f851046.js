@@ -1,6 +1,6 @@
 self.__precacheManifest = [
   {
-    "revision": "c935243e25a2d93fa16964ef622f0dfe",
+    "revision": "b031bb0f7dee9b67590ffd05fe4acf98",
     "url": "/images/icons/icon-384x384.png"
   },
   {
@@ -8,27 +8,27 @@ self.__precacheManifest = [
     "url": "/images/white.png"
   },
   {
-    "revision": "0ccec7c0d009e0f89130fbed9fdf39a7",
+    "revision": "0ce9a71b5498f3c4ac8f3f8a23cbc177",
     "url": "/index.html"
   },
   {
-    "revision": "e350ce5ac61713b73580",
+    "revision": "dc2cbc9f3051d209d3a0",
     "url": "/style.css"
   },
   {
-    "revision": "75b88ea45456a412a89cd759573f5c56",
+    "revision": "a12aa0f8d790d819d69f7bf327930f22",
     "url": "/images/icons/icon-72x72.png"
   },
   {
-    "revision": "17975a45bb4044ea132e437d6edfc3d3",
+    "revision": "b031bb0f7dee9b67590ffd05fe4acf98",
     "url": "/images/icons/icon-128x128.png"
   },
   {
-    "revision": "6b18c8fb9b068c110375b2a99ec186e2",
-    "url": "/images/icons/icon-144x144.png"
+    "revision": "b031bb0f7dee9b67590ffd05fe4acf98",
+    "url": "/images/icons/icon-152x152.png"
   },
   {
-    "revision": "44175520501464357eac0da3e278dc62",
+    "revision": "b031bb0f7dee9b67590ffd05fe4acf98",
     "url": "/images/icons/icon-192x192.png"
   },
   {
@@ -36,15 +36,15 @@ self.__precacheManifest = [
     "url": "/images/ima1.jpg"
   },
   {
-    "revision": "030f89fca497dce514f7aae5f5cecf91",
+    "revision": "b031bb0f7dee9b67590ffd05fe4acf98",
     "url": "/images/icons/icon-512x512.png"
   },
   {
-    "revision": "43989d03a83d6f87e8eb0fd0f2c9daa1",
-    "url": "/images/icons/icon-152x152.png"
+    "revision": "b031bb0f7dee9b67590ffd05fe4acf98",
+    "url": "/images/icons/icon-144x144.png"
   },
   {
-    "revision": "5170242e9b0b23d2bf459e819a7e5647",
+    "revision": "b031bb0f7dee9b67590ffd05fe4acf98",
     "url": "/images/icons/icon-96x96.png"
   },
   {
@@ -60,6 +60,6 @@ self.__precacheManifest = [
     "url": "/favicon.ico"
   },
   {
-    "url": "/46fa7821cbe51fe7e675-bundle.js"
+    "url": "/5e45c69c857b3135e6fd-bundle.js"
   }
 ];

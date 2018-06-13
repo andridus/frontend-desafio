@@ -16,9 +16,6 @@ export default class Menu extends Component {
 										WeLove<b>Movies</b>
 									</h1>
 								</Link>
-								<Link href="/" class="navbar-item is-active">
-									<i class="fa fa-star-alt" style="margin-right:5px"> </i> Mais Populares
-								</Link>
 								<Link href="/favoritos" class="navbar-item">
 									<i class="fa fa-star-alt" style="margin-right:5px"> </i> Favoritos
 								</Link>

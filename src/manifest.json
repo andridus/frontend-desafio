@@ -1,9 +1,9 @@
 {
-  "name": "Frontend Desafio",
-  "short_name": "Desafio do Agenda Edu",
-  "theme_color": "#2a022f",
-  "background_color": "#8304b9",
-  "display": "standalone",
+  "name": "WeLoveMovies",
+  "short_name": "WeLoveMovies",
+  "theme_color": "#f3ca21",
+  "background_color": "#582200",
+  "display": "browser",
   "Scope": "/",
   "start_url": "/",
   "icons": [

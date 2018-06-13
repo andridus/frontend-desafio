@@ -78,6 +78,7 @@ html{
 
 	}
 }
+
 .movie-crew{
 	list-style: none;
 	li {
@@ -130,6 +131,17 @@ html{
 		margin-bottom:5px;
 		float: left;
 		figure {
+			.movie-vote{
+				font-size:15px;
+				position: absolute;
+				top:1px;
+				right:1px;
+				font-weight: bold;
+				color: #fdcf02;
+				text-shadow: 0px 0px 5px #000;
+				background-color:rgba(209, 209, 209, 0.452);
+				padding:5px;
+			}
 			.filme-conteudo{
 				background: #fffFFFEE;
 				padding: 5px;
@@ -141,9 +153,11 @@ html{
 				opacity: 0;
 				transition: all 0.5s;
 				.stars{
-					position:absolute;
-					bottom:5px;
-					right:5px;
+					position: absolute;
+					bottom:10px;
+					left: 50%;
+					transform: translateX(-50%);
+					text-align:center
 				}
 			}
 		}

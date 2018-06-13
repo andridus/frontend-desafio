@@ -9,7 +9,7 @@ export default class Populares extends Component {
 
 	constructor(props){
 		super(props);
-		this.setState({r: [], p: 1, loading: false, image_size:'200px', image_size_url: 'w185_and_h278_bestv2',});
+		this.setState({r: [], p: 1, loading: false, sort: 'popularity', image_size:'200px', image_size_url: 'w185_and_h278_bestv2',});
 		this.recarrega_itens.bind(this);
 		this.on_window_width_change.bind(this);
 		this.get_approximately_start_rows.bind(this);
@@ -79,7 +79,7 @@ export default class Populares extends Component {
 			}
 			
 	}
-	recarrega_itens(p, func){
+	recarrega_itens(p, func, sort){
 		let that = this;
 		const timeWindow = 500;//TEMPO LIMITE EM MILISEGUNDOS PARA UMA NOVA SOLICITAÇÃO DE RECARREGAR DADOS
 		
@@ -94,10 +94,22 @@ export default class Populares extends Component {
 			//ATUALIZA TEMPO LIMITE PARA AGORA
 			let lastLoading1 = new Date().getTime();
 			this.setState({ loading: true, lastLoading: lastLoading1});
-			
+			let sort =this.state.sort;
+			switch(sort){
+				case 'popularity':
+					sort = "popularity.desc"
+				break;
+				case 'votes':
+					sort = "vote_average.desc&vote_count.gte=20"
+					break;
+				default:
+					sort = "popularity.desc"
+					break;
+			}
+
 			xhr({
 				method: 'get',
-				uri: 'https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=3bc186e4074d3467280a50b8b092de7c&language=pt-BR&page=' + p,
+				uri: 'https://api.themoviedb.org/3/discover/movie?sort_by='+sort+'&api_key=3bc186e4074d3467280a50b8b092de7c&language=pt-BR&page=' + p,
 				headers: {
 					'Content-Type': 'application/json'
 				}
@@ -123,24 +135,42 @@ export default class Populares extends Component {
 		let that = this;
 		return (
 			<div class="container is-gapless">
-				<h3 class="subtitle has-text-white is-size-4 has-text-centered">
-					Mais populares
-				</h3>
+				<div class="title has-text-centered">
+					<div class="control has-icons-right" style="width:150px; margin:auto;">
+						<select class="input" value={this.state.sort} onChange={(e)=>{
+
+							this.setState({r: [], p: 1, sort: e.target.value})
+							console.log(e)
+							this.recarrega_itens(1, null)
+						}} >
+							<option value="popularity"> Popularidade</option>
+							<option value="votes"> Pontuação</option>
+						</select>
+						<span class="el-icon icon is-right">
+							<i class="fas fa-arrow-down" style="margin-top:-20px;margin-right:-15px;"></i>
+						</span>
+					</div>
+				</div>
 					<ul class="lista-de-filmes">
 						{this.state.r && this.state.r.map(x => {
 							 return (
 								 <li class="item-da-lista" >
 									 <figure class="image" style={"width: "+that.state.image_size}>
 										 <img src={'https://image.tmdb.org/t/p/'+that.state.image_size_url+x.poster_path} style={"width: "+that.state.image_size} />
+										
+										 <div class="movie-vote">
+										 	{x.vote_average}
+										 </div>
 										 <div class="filme-conteudo">
 											 <b class="title is-6">{x.title}</b>
-											 <p class="is-size-7 has-text-gray">{x.overview.substr(0, 200)}...</p>
+											 <p class="has-text-gray">{x.overview.substr(0, 150)}...</p>
 											 <div class="stars">
-													<div class="tag is-small is-warning ">
-														<i class="fa fa-star" style="margin-right: 5px;"> </i>{x.popularity}
+													<div class="button is-small is-warning ">
+														<i class="fa fa-star" style="margin-right: 5px;"> </i>Favoritar
 													</div>
+													<br />
 													<Link href={"/filme/"+x.id} class="button is-light is-small">
-														<i class="fa fa-star-alt" style="margin-right:5px"> </i> Detalhes
+														<i class="fa fa-star-alt" style="margin-right:5px"> </i> <u>Detalhes</u>
 													</Link>
 												
 											</div>
