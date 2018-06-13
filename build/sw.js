@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.2.0/workbox-sw.js");
 
 importScripts(
-  "/precache-manifest.263f6261e9be7c5cb65ffab550a809ca.js"
+  "/precache-manifest.bf2d799f7bfc33fdb63d5f1ad8ccbd1d.js"
 );
 
 workbox.skipWaiting();
@@ -31,4 +31,4 @@ workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
 
 workbox.routing.registerRoute(/https:\/\/api.themoviedb.org\/3\//, workbox.strategies.staleWhileRevalidate(), 'GET');
 workbox.routing.registerRoute(/https:\/\/image.tmdb.org\/t\/p\//, workbox.strategies.staleWhileRevalidate(), 'GET');
-workbox.routing.registerRoute(/https:\/\/frontend-desafio.firebaseio.com\//, workbox.strategies.staleWhileRevalidate(), 'GET');
+workbox.routing.registerRoute(/https:\/\/frontend-desafio.firebaseio.com\//, workbox.strategies.networkFirst(), 'GET');

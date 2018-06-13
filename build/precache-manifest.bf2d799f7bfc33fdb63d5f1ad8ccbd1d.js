@@ -8,11 +8,11 @@ self.__precacheManifest = [
     "url": "/images/white.png"
   },
   {
-    "revision": "94095c4fad8212b592e5",
+    "revision": "d17711867c6b22506669",
     "url": "/style.css"
   },
   {
-    "revision": "664951da95a755676c4bfa6ac42b72b5",
+    "revision": "c27d6a184f61bfac4b17d48b4bc96bf9",
     "url": "/index.html"
   },
   {
@@ -75,9 +75,9 @@ self.__precacheManifest = [
     "url": "/images/no_poster_w300_and_h450_bestv2.png"
   },
   {
-    "url": "/ba7b92d2c6769a7182fd-bundle.js"
+    "url": "/b02bdc1b846fd65473922f5f62832108.ttf"
   },
   {
-    "url": "/b02bdc1b846fd65473922f5f62832108.ttf"
+    "url": "/6bb07cc4668b4999a82a-bundle.js"
   }
 ];

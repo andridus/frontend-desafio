@@ -116,7 +116,7 @@ export default class Favoritos extends Component {
 
 		//DEFINE 'EM REMOÇÃO' O FILME CLICADO DA LISTA DE FILMES FAVORITOS
 		let idx = filmes.indexOf(filme);
-		filmes[idx].removendo = true;
+		filmes[idx].desfavoritando = true;
 		that.setState({ r: filmes });
 
 		//ENVIA COMANDO PARA DELETAR DO FIREBASE O FILME
@@ -142,7 +142,7 @@ export default class Favoritos extends Component {
 					title: 'Erro!',
 					message: <p>Não é possível retirar o filme dos favoritos. Talvez seja necessário a conexão com a internet</p>
 				});
-				filmes[idx].removendo = false;
+				filmes[idx].desfavoritando = false;
 				that.setState({ r: filmes });
 			}
 			
@@ -174,6 +174,7 @@ export default class Favoritos extends Component {
 												this.on_handler_desfavoritar(x);
 											}
 											}>
+												{x.desfavoritando && <span><i class="fa fa-spinner fa-spin " style="margin-right: 5px;"> </i>Removendo dos favoritos</span>}
 												<i class="fa fa-trash" style="margin-right: 5px;"> </i>Remover dos Favoritos
 													</div>
 											<br />

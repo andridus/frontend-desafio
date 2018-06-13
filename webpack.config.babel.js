@@ -153,7 +153,7 @@ module.exports = {
 				},
 				{
 					urlPattern: new RegExp('https://frontend-desafio.firebaseio.com/'),
-					handler: 'staleWhileRevalidate'
+					handler: 'networkFirst'
 				}
 			],
 			

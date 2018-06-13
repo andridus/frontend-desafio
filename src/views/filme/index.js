@@ -293,11 +293,14 @@ export default class Filme extends Component {
 						</div>
 					</div>
 					}
-					{!r && <div>
-						<h3 class="subtitle is-size-4 has-text-centered">
-							Aguarde...
-						</h3>
-					</div>}
+				{<div class="item-da-lista-loading has-text-white" style={"width: 100%"}>
+					<div class="loading-spinner1">
+						<i class="fa fa-spinner fa-spin fa-2x"></i>
+						<p>
+							Aguarde, carregando informações
+					  </p>
+					</div>
+				</div>}
 					
 				</div>
 		);
