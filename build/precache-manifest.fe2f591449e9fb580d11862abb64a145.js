@@ -25,7 +25,7 @@ self.__precacheManifest = [
   },
   {
     "revision": "b031bb0f7dee9b67590ffd05fe4acf98",
-    "url": "/images/icons/icon-152x152.png"
+    "url": "/images/icons/icon-144x144.png"
   },
   {
     "revision": "b031bb0f7dee9b67590ffd05fe4acf98",
@@ -41,7 +41,7 @@ self.__precacheManifest = [
   },
   {
     "revision": "b031bb0f7dee9b67590ffd05fe4acf98",
-    "url": "/images/icons/icon-144x144.png"
+    "url": "/images/icons/icon-152x152.png"
   },
   {
     "revision": "b031bb0f7dee9b67590ffd05fe4acf98",
